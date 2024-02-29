@@ -16,11 +16,11 @@ namespace ChurchStore.App
             _usuarioRepositorio = leilaoRepositorio;
         }
 
-        public async Task<Usuario> Retornar(string login, string senha)
+        public async Task<Usuario> Retornar(string email, string senha)
         {
             try
             {
-                var lista = await _usuarioRepositorio.Retornar(login, senha);
+                var lista = await _usuarioRepositorio.Retornar(email, senha);
                 return lista;
             }
             catch

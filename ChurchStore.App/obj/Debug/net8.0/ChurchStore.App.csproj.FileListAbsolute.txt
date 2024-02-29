@@ -33,3 +33,4 @@ C:\repositorios\ChurchStore.API\ChurchStore.App\obj\Debug\net8.0\ChurchStore.App
 C:\repositorios\ChurchStore.API\ChurchStore.App\obj\Debug\net8.0\refint\ChurchStore.App.dll
 C:\repositorios\ChurchStore.API\ChurchStore.App\obj\Debug\net8.0\ChurchStore.App.pdb
 C:\repositorios\ChurchStore.API\ChurchStore.App\obj\Debug\net8.0\ref\ChurchStore.App.dll
+C:\Users\Daniel.scharp\Desktop\Repositorios\ChurchStore\ChurchStore.API\ChurchStore.App\obj\Debug\net8.0\ChurchStore.App.sourcelink.json

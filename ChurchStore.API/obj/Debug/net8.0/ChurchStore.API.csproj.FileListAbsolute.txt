@@ -137,3 +137,4 @@ C:\repositorios\ChurchStore.API\ChurchStore.API\obj\Debug\net8.0\refint\ChurchSt
 C:\repositorios\ChurchStore.API\ChurchStore.API\obj\Debug\net8.0\ChurchStore.API.pdb
 C:\repositorios\ChurchStore.API\ChurchStore.API\obj\Debug\net8.0\ChurchStore.API.genruntimeconfig.cache
 C:\repositorios\ChurchStore.API\ChurchStore.API\obj\Debug\net8.0\ref\ChurchStore.API.dll
+C:\Users\Daniel.scharp\Desktop\Repositorios\ChurchStore\ChurchStore.API\ChurchStore.API\obj\Debug\net8.0\ChurchStore.API.sourcelink.json

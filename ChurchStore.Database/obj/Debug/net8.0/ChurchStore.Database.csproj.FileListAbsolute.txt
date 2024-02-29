@@ -29,3 +29,4 @@ C:\repositorios\ChurchStore.API\ChurchStore.Database\obj\Debug\net8.0\ChurchStor
 C:\repositorios\ChurchStore.API\ChurchStore.Database\obj\Debug\net8.0\refint\ChurchStore.Database.dll
 C:\repositorios\ChurchStore.API\ChurchStore.Database\obj\Debug\net8.0\ChurchStore.Database.pdb
 C:\repositorios\ChurchStore.API\ChurchStore.Database\obj\Debug\net8.0\ref\ChurchStore.Database.dll
+C:\Users\Daniel.scharp\Desktop\Repositorios\ChurchStore\ChurchStore.API\ChurchStore.Database\obj\Debug\net8.0\ChurchStore.Database.sourcelink.json

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChurchStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -20,9 +20,9 @@ namespace ChurchStore.API.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<dynamic>> AuthenticateAsync([FromBody] Usuario model)
+        public async Task<ActionResult<dynamic>> AuthenticateAsync([FromBody] Login model)
         {
-            var user = await _usuarioApplication.Retornar(model.Login, model.Senha);
+            var user = await _usuarioApplication.Retornar(model.Email, model.Senha);
 
             if (user.UsuarioId == 0)
             {

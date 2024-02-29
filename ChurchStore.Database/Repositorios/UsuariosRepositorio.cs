@@ -17,7 +17,7 @@ namespace ChurchStore.Database.Repositorios
             _connMySql = connMySql;
         }
 
-        public async Task<Usuario> Retornar(string login, string senha)
+        public async Task<Usuario> Retornar(string email, string senha)
         {
             try
             {
@@ -26,8 +26,8 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT * FROM church_shop.usuarios ");
-                    sql.AppendFormat(" where login = '{0}' and senha = MD5('{1}') ", login, senha);
+                    sql.Append(" SELECT * FROM church_store.usuarios ");
+                    sql.AppendFormat(" where email = '{0}' and senha = MD5('{1}') ", email, senha);
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
@@ -60,7 +60,7 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT * FROM church_shop.usuarios; ");
+                    sql.Append(" SELECT * FROM church_store.usuarios; ");
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 

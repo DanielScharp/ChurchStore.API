@@ -21,3 +21,4 @@ C:\repositorios\ChurchStore.API\ChurchStore.Domain\obj\Debug\net8.0\ChurchStore.
 C:\repositorios\ChurchStore.API\ChurchStore.Domain\obj\Debug\net8.0\refint\ChurchStore.Domain.dll
 C:\repositorios\ChurchStore.API\ChurchStore.Domain\obj\Debug\net8.0\ChurchStore.Domain.pdb
 C:\repositorios\ChurchStore.API\ChurchStore.Domain\obj\Debug\net8.0\ref\ChurchStore.Domain.dll
+C:\Users\Daniel.scharp\Desktop\Repositorios\ChurchStore\ChurchStore.API\ChurchStore.Domain\obj\Debug\net8.0\ChurchStore.Domain.sourcelink.json
