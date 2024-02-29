@@ -18,7 +18,6 @@ namespace ChurchStore.API.Controllers
 
         [Route("listar")]
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Listar()
         {
             try

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kVNh+8bPMjc+8RLX78IoSJsktzL+E+ShctrSfVGKwlAVVGLiKGRr7u/6SF4+VNPIF1xvkMG7U/9yi0bAGaQ3WA==",
+  "dgSpecHash": "CCxOw3vTKTjcvPgQz/nL5a7kNdubQ14I2adUnBogWGJgCYMLZXUVNUnJ6iX19mktdJ//9O5+VXIURn3V5gSPHA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Daniel.scharp\\Desktop\\Repositorios\\ChurchStore\\ChurchStore.API\\ChurchStore.Domain\\ChurchStore.Domain.csproj",
+  "projectFilePath": "C:\\repositorios\\ChurchStore.API\\ChurchStore.Domain\\ChurchStore.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

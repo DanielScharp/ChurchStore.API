@@ -26,8 +26,8 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT * FROM cantina.usuarios ");
-                    sql.AppendFormat(" where login = '{0}' and senha = '{1}' ", login, senha);
+                    sql.Append(" SELECT * FROM church_shop.usuarios ");
+                    sql.AppendFormat(" where login = '{0}' and senha = MD5('{1}') ", login, senha);
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
@@ -60,7 +60,7 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT * FROM cantina.usuarios; ");
+                    sql.Append(" SELECT * FROM church_shop.usuarios; ");
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
