@@ -3624,19 +3624,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Daniel Scharp\\.nuget\\packages\\": {}
+    "C:\\Users\\Daniel.scharp\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\repositorios\\ChurchStore.API\\ChurchStore.API\\ChurchStore.API.csproj",
+      "projectUniqueName": "C:\\Users\\Daniel.scharp\\Desktop\\Repositorios\\ChurchStore\\ChurchStore.API\\ChurchStore.API\\ChurchStore.API.csproj",
       "projectName": "ChurchStore.API",
-      "projectPath": "C:\\repositorios\\ChurchStore.API\\ChurchStore.API\\ChurchStore.API.csproj",
-      "packagesPath": "C:\\Users\\Daniel Scharp\\.nuget\\packages\\",
-      "outputPath": "C:\\repositorios\\ChurchStore.API\\ChurchStore.API\\obj\\",
+      "projectPath": "C:\\Users\\Daniel.scharp\\Desktop\\Repositorios\\ChurchStore\\ChurchStore.API\\ChurchStore.API\\ChurchStore.API.csproj",
+      "packagesPath": "C:\\Users\\Daniel.scharp\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Daniel.scharp\\Desktop\\Repositorios\\ChurchStore\\ChurchStore.API\\ChurchStore.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Daniel Scharp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Daniel.scharp\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3650,8 +3650,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\repositorios\\ChurchStore.API\\ChurchStore.App\\ChurchStore.App.csproj": {
-              "projectPath": "C:\\repositorios\\ChurchStore.API\\ChurchStore.App\\ChurchStore.App.csproj"
+            "C:\\Users\\Daniel.scharp\\Desktop\\Repositorios\\ChurchStore\\ChurchStore.API\\ChurchStore.App\\ChurchStore.App.csproj": {
+              "projectPath": "C:\\Users\\Daniel.scharp\\Desktop\\Repositorios\\ChurchStore\\ChurchStore.API\\ChurchStore.App\\ChurchStore.App.csproj"
             }
           }
         }
@@ -3706,7 +3706,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -39,7 +39,6 @@ namespace ChurchStore.API.Controllers
             try
             {
                  _usuarioApplication.Cadastrar(user);
-                
             }
             catch (Exception ex)
             {

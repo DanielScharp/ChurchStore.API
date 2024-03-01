@@ -15,11 +15,14 @@ string connectionString = configuration.GetConnectionString("MySqlConnection");
 
 // Criando instâncias de UsuarioRepositorio      
 var usuarioRepositorio = new UsuarioRepositorio(connectionString);
+var pedidosRepositorio = new PedidosRepositorio(connectionString);
 
 // Adicionando as instâncias ao contêiner de serviços
 builder.Services.AddSingleton(usuarioRepositorio);
+builder.Services.AddSingleton(pedidosRepositorio);
 
 builder.Services.AddScoped<UsuarioApplication>();
+builder.Services.AddScoped<PedidosApplication>();
 
 
 
