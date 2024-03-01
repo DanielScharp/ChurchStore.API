@@ -1,4 +1,5 @@
 ﻿using ChurchStore.App;
+using ChurchStore.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,21 @@ namespace ChurchStore.API.Controllers
             {
                 var listaUsuarios = await _usuarioApplication.ListarUsuarios();
                 return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Route("cadastrar")]
+        [HttpPost]
+        public void Cadastrar(Login user)
+        {
+            try
+            {
+                 _usuarioApplication.Cadastrar(user);
+                
             }
             catch (Exception ex)
             {

@@ -28,6 +28,17 @@ namespace ChurchStore.App
                 throw;
             }
         }
+        public void Cadastrar(Login user)
+        {
+            try
+            {
+                _usuarioRepositorio.Cadastrar(user);
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public async Task<List<Usuario>> ListarUsuarios()
         {
             try

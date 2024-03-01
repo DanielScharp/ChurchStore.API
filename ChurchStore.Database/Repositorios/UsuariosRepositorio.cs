@@ -87,5 +87,30 @@ namespace ChurchStore.Database.Repositorios
                 throw;
             }
         }
+
+        public async void Cadastrar(Login user)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" insert into usuarios ");
+                    sql.Append(" (Nome, Email, Senha) ");
+                    sql.Append(" values ");
+                    sql.AppendFormat(" ('{0}','{1}', md5('{2}')) ", user.Nome, user.Email, user.Senha);
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
