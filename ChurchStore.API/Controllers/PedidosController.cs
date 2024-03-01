@@ -30,5 +30,21 @@ namespace ChurchStore.API.Controllers
 
             }
         }
+
+        [Route("produtos/listar")]
+        [HttpGet]
+        public async Task<IActionResult> ListarProdutos()
+        {
+            try
+            {
+                var listaUsuarios = await _pedidosApplication.ListarProdutos();
+                return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
     }
 }

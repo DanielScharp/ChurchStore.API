@@ -20,8 +20,19 @@ namespace ChurchStore.App
         {
             try
             {
-                var listapedidos = await _pedidosRepositorio.Listar();
-                return listapedidos;
+                return await _pedidosRepositorio.Listar();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public async Task<List<Produto>> ListarProdutos()
+        {
+            try
+            {
+                return await _pedidosRepositorio.ListarProdutos();
+                 
             }
             catch
             {

@@ -10,6 +10,8 @@ namespace ChurchStore.Domain
     {
         public int PedidoId { get; set; }
         public int ClienteId { get; set; }
+        public string? ClienteNome { get; set; }
+        public string? ClienteTel { get; set; }
         public int StatusId { get; set; }
         public string? StatusNome { get; set; }
         public DateTime PedidoData { get; set; }
