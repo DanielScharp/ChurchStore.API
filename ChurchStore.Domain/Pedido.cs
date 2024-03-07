@@ -17,4 +17,18 @@ namespace ChurchStore.Domain
         public DateTime PedidoData { get; set; }
         public double PedidoValor { get; set; }
     }
+
+    public class PedidoItem
+    {
+        public int ItemId { get; set; }
+        public int PedidoId { get; set; }
+        public int ClienteId { get; set; }
+        public string? ClienteNome { get; set; }
+        public string? ProdutoNome { get; set; }
+        public double ProdutoValor { get; set; }
+        public string? ImagemUrl { get; set; }
+        public int Quantidade { get; set; }
+        public double Total { get; set; }
+
+    }
 }

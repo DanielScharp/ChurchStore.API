@@ -27,11 +27,25 @@ namespace ChurchStore.App
                 throw;
             }
         }
-        public async Task<List<Produto>> ListarProdutos()
+
+
+        public async Task<List<PedidoItem>> ListarItensPorCliente(int clienteId)
         {
             try
             {
-                return await _pedidosRepositorio.ListarProdutos();
+                return await _pedidosRepositorio.ListarItensPorCliente(clienteId);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<ulong> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
+        {
+            try
+            {
+                return await _pedidosRepositorio.AdicionarItemAoPedido( clienteId, produtoId, quantidade);
                  
             }
             catch

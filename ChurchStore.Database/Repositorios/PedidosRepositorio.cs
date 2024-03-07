@@ -17,6 +17,50 @@ namespace ChurchStore.Database.Repositorios
             _connMySql = connMySql;
         }
 
+        public async Task<List<Pedido>> Retornar()
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" SELECT t1.*, t2.Status, T3.* ");
+                    sql.Append(" FROM pedidos t1");
+                    sql.Append(" LEFT JOIN pedidos_status t2 ON t2.StatusId = t1.StatusId ");
+                    sql.Append(" LEFT JOIN clientes t3 ON t3.ClienteId = t1.ClienteId ");
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
+
+                    var pedidos = new List<Pedido>();
+
+                    while (reader.Read())
+                    {
+                        var pedido = new Pedido();
+
+                        pedido.PedidoId = reader.GetInt32(reader.GetOrdinal("PedidoId"));
+                        pedido.ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId"));
+                        pedido.ClienteNome = reader[reader.GetOrdinal("ClienteNome")].ToString();
+                        pedido.ClienteTel = reader[reader.GetOrdinal("Telefone")].ToString();
+                        pedido.StatusId = reader.GetInt32(reader.GetOrdinal("StatusId"));
+                        pedido.StatusNome = reader[reader.GetOrdinal("Status")].ToString();
+                        pedido.PedidoData = reader[reader.GetOrdinal("PedidoData")] != DBNull.Value ? reader.GetDateTime(reader.GetOrdinal("PedidoData")) : new DateTime();
+                        pedido.PedidoValor = reader[reader.GetOrdinal("PedidoValor")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("PedidoValor")) : 0;
+
+                        pedidos.Add(pedido);
+                    }
+
+                    return pedidos;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public async Task<List<Pedido>> Listar()
         {
             try
@@ -61,7 +105,7 @@ namespace ChurchStore.Database.Repositorios
                 throw;
             }
         }
-        public async Task<List<Produto>> ListarProdutos()
+        public async Task<List<PedidoItem>> ListarItensPorCliente(int clienteId)
         {
             try
             {
@@ -70,23 +114,32 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT * ");
-                    sql.Append(" FROM produtos ");
+                    sql.Append(" SELECT t1.*, t2.ProdutoNome, t2.ProdutoValor, t2.ImagemUrl, t3.ClienteNome, ");
+                    sql.Append(" t1.Quantidade * t2.ProdutoValor as 'Total'");
+                    sql.Append(" FROM pedidos_itens t1 ");
+                    sql.Append(" left join produtos t2 on t2.ProdutoId = t1.ProdutoId ");
+                    sql.Append(" LEFT JOIN clientes t3 ON t3.ClienteId = t1.ClienteId ");
+                    sql.AppendFormat(" where t1.ClienteId ='{0}' ", clienteId);
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
                     using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
 
-                    var pedidos = new List<Produto>();
+                    var pedidos = new List<PedidoItem>();
 
                     while (reader.Read())
                     {
-                        var pedido = new Produto();
+                        var pedido = new PedidoItem();
 
-                        pedido.ProdutoId = reader.GetInt32(reader.GetOrdinal("ProdutoId"));
-                        pedido.ProdutoNome = reader[reader.GetOrdinal("ProdutoNome")].ToString();
-                        pedido.ProdutoValor = reader[reader.GetOrdinal("ProdutoValor")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("ProdutoValor")) : 0;
+                        pedido.ItemId = reader.GetInt32(reader.GetOrdinal("PedidoItemId"));
+                        pedido.PedidoId = reader.GetInt32(reader.GetOrdinal("PedidoId"));
+                        pedido.ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId"));
+                        pedido.ClienteNome = reader[reader.GetOrdinal("ClienteNome")].ToString();
                         pedido.Quantidade = reader.GetInt32(reader.GetOrdinal("Quantidade"));
+                        pedido.ProdutoNome = reader[reader.GetOrdinal("ProdutoNome")].ToString();
+                        pedido.ImagemUrl = reader[reader.GetOrdinal("ImagemUrl")].ToString();
+                        pedido.ProdutoValor = reader[reader.GetOrdinal("ProdutoValor")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("ProdutoValor")) : 0;
+                        pedido.Total = reader[reader.GetOrdinal("Total")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("Total")) : 0;
 
                         pedidos.Add(pedido);
                     }
@@ -99,5 +152,108 @@ namespace ChurchStore.Database.Repositorios
                 throw;
             }
         }
+        
+        private async Task<ulong> AdicionarPedido(int clienteId)
+        {
+            try
+            {
+
+                ulong lastInsertedId = 0;
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" INSERT INTO pedidos ");
+                    sql.Append(" (`ClienteId`, `StatusId`, `PedidoData`) ");
+                    sql.Append(" VALUES ");
+                    sql.AppendFormat(" ('{0}', '{1}', '{2}'); ", clienteId, 1, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    sql.Append(" SELECT LAST_INSERT_ID();"); // Adicionando a consulta para obter o último ID inserido
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    lastInsertedId = (ulong)await command.ExecuteScalarAsync(); // Executa a consulta e obtém o último ID inserido
+                }
+                return lastInsertedId;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public async Task<ulong> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
+        {
+            try
+            {
+                ulong idPedidoAberto = await RetornaIdPedidoAberto(clienteId);
+                ulong pedidoId = 0;
+                if(idPedidoAberto > 0)
+                {
+                    pedidoId = idPedidoAberto;
+                }
+                else
+                {
+                    pedidoId = await AdicionarPedido(clienteId);
+                }
+
+                ulong lastInsertedId = 0;
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" INSERT INTO pedidos_itens ");
+                    sql.Append(" (`PedidoId`, `ClienteId`, `ProdutoId`, `Quantidade`) ");
+                    sql.Append(" VALUES ");
+                    sql.AppendFormat(" ('{0}', '{1}', '{2}', '{3}'); ", pedidoId, clienteId, produtoId, quantidade);
+
+                    sql.Append(" SELECT LAST_INSERT_ID();"); // Adicionando a consulta para obter o último ID inserido
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    lastInsertedId = (ulong)await command.ExecuteScalarAsync(); // Executa a consulta e obtém o último ID inserido
+                }
+                return lastInsertedId;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
+        private async Task<ulong> RetornaIdPedidoAberto(int clienteId)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" SELECT * FROM pedidos ");
+                    sql.Append(" where StatusId = 1 ");
+                    sql.AppendFormat(" and ClienteId ={0}; ", clienteId);
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
+
+                    ulong response = 0;
+
+                    if (reader.Read())
+                    {
+                        response = (ulong)reader.GetInt32(reader.GetOrdinal("PedidoId"));
+                    }
+                    return response;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
     }
 }

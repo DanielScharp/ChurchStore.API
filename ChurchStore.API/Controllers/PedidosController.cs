@@ -31,13 +31,29 @@ namespace ChurchStore.API.Controllers
             }
         }
 
-        [Route("produtos/listar")]
+        [Route("itens/listar")]
         [HttpGet]
-        public async Task<IActionResult> ListarProdutos()
+        public async Task<IActionResult> ListarItens(int clienteId)
         {
             try
             {
-                var listaUsuarios = await _pedidosApplication.ListarProdutos();
+                var listaUsuarios = await _pedidosApplication.ListarItensPorCliente(clienteId);
+                return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
+
+        [Route("itens/adicionar")]
+        [HttpPost]
+        public async Task<IActionResult> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
+        {
+            try
+            {
+                var listaUsuarios = await _pedidosApplication.AdicionarItemAoPedido(clienteId, produtoId, quantidade);
                 return Ok(listaUsuarios);
             }
             catch (Exception ex)
