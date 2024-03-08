@@ -41,7 +41,7 @@ namespace ChurchStore.App
             }
         }
 
-        public async Task<ulong> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
+        public async Task<int> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
         {
             try
             {

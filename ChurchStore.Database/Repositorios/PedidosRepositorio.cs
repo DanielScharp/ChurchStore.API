@@ -114,12 +114,13 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT t1.*, t2.ProdutoNome, t2.ProdutoValor, t2.ImagemUrl, t3.ClienteNome, ");
-                    sql.Append(" t1.Quantidade * t2.ProdutoValor as 'Total'");
+                    sql.Append(" SELECT t1.PedidoId, SUM(t1.Quantidade) as 'Quantidade', SUM(t1.Quantidade * t2.ProdutoValor) as 'Total', ");
+                    sql.Append(" t2.ProdutoNome, t2.ProdutoValor, t2.ImagemUrl, t3.ClienteNome ");
                     sql.Append(" FROM pedidos_itens t1 ");
                     sql.Append(" left join produtos t2 on t2.ProdutoId = t1.ProdutoId ");
                     sql.Append(" LEFT JOIN clientes t3 ON t3.ClienteId = t1.ClienteId ");
                     sql.AppendFormat(" where t1.ClienteId ='{0}' ", clienteId);
+                    sql.Append(" GROUP BY t1.PedidoId, t1.ProdutoId");
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
@@ -131,9 +132,7 @@ namespace ChurchStore.Database.Repositorios
                     {
                         var pedido = new PedidoItem();
 
-                        pedido.ItemId = reader.GetInt32(reader.GetOrdinal("PedidoItemId"));
                         pedido.PedidoId = reader.GetInt32(reader.GetOrdinal("PedidoId"));
-                        pedido.ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId"));
                         pedido.ClienteNome = reader[reader.GetOrdinal("ClienteNome")].ToString();
                         pedido.Quantidade = reader.GetInt32(reader.GetOrdinal("Quantidade"));
                         pedido.ProdutoNome = reader[reader.GetOrdinal("ProdutoNome")].ToString();
@@ -152,7 +151,8 @@ namespace ChurchStore.Database.Repositorios
                 throw;
             }
         }
-        
+
+
         private async Task<ulong> AdicionarPedido(int clienteId)
         {
             try
@@ -182,12 +182,19 @@ namespace ChurchStore.Database.Repositorios
                 throw;
             }
         }
-        public async Task<ulong> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
+
+        public async Task<int> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
         {
             try
             {
                 ulong idPedidoAberto = await RetornaIdPedidoAberto(clienteId);
                 ulong pedidoId = 0;
+                int estoqueProduto = await RetornaQuantidadeProduto(produtoId);
+
+                int estoqueRestante = estoqueProduto - quantidade;
+                AlterarQuantidadeEstoque(produtoId, estoqueRestante);
+
+
                 if(idPedidoAberto > 0)
                 {
                     pedidoId = idPedidoAberto;
@@ -197,7 +204,6 @@ namespace ChurchStore.Database.Repositorios
                     pedidoId = await AdicionarPedido(clienteId);
                 }
 
-                ulong lastInsertedId = 0;
                 using (var conn = new MySqlConnection(_connMySql))
                 {
                     await conn.OpenAsync();
@@ -208,13 +214,13 @@ namespace ChurchStore.Database.Repositorios
                     sql.Append(" VALUES ");
                     sql.AppendFormat(" ('{0}', '{1}', '{2}', '{3}'); ", pedidoId, clienteId, produtoId, quantidade);
 
-                    sql.Append(" SELECT LAST_INSERT_ID();"); // Adicionando a consulta para obter o último ID inserido
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
-                    lastInsertedId = (ulong)await command.ExecuteScalarAsync(); // Executa a consulta e obtém o último ID inserido
+                    using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
+
                 }
-                return lastInsertedId;
+                return estoqueRestante;
             }
             catch
             {
@@ -247,6 +253,60 @@ namespace ChurchStore.Database.Repositorios
                         response = (ulong)reader.GetInt32(reader.GetOrdinal("PedidoId"));
                     }
                     return response;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        private async Task<int> RetornaQuantidadeProduto(int produtoId)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" SELECT Quantidade FROM produtos ");
+                    sql.AppendFormat(" where ProdutoId = {0} ", produtoId);
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
+
+                    int response = 0;
+
+                    if (reader.Read())
+                    {
+                        response = reader.GetInt32(reader.GetOrdinal("Quantidade"));
+                    }
+                    return response;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        private async void AlterarQuantidadeEstoque(int produtoId, int quantidade)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" UPDATE produtos ");
+                    sql.AppendFormat(" set quantidade = {0} ", quantidade);
+                    sql.AppendFormat(" where ProdutoId = {0} ", produtoId);
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
+
                 }
             }
             catch
