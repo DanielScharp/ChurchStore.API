@@ -15,11 +15,25 @@ namespace ChurchStore.App
         {
             _produtosRepositorio = produtosRepositorio;
         }
+
         public async Task<List<Produto>> Listar()
         {
             try
             {
                 return await _produtosRepositorio.Listar();
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<Produto> AdicionarProduto(Produto produto)
+        {
+            try
+            {
+                return await _produtosRepositorio.AdicionarProduto(produto);
 
             }
             catch

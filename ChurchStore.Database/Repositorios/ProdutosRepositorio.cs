@@ -56,5 +56,37 @@ namespace ChurchStore.Database.Repositorios
                 throw;
             }
         }
+
+        public async Task<Produto> AdicionarProduto(Produto produto)
+        {
+            try
+            {
+
+                ulong lastInsertedId = 0;
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" INSERT INTO produtos ");
+                    sql.Append(" (`ProdutoNome`, `ProdutoValor`, `Quantidade`, `ImagemUrl`) ");
+                    sql.Append(" VALUES ");
+                    sql.AppendFormat(" ('{0}', '{1}', '{2}', '{3}'); ", produto.ProdutoNome, produto.ProdutoValor, produto.Quantidade, produto.ImagemUrl);
+
+                    sql.Append(" SELECT LAST_INSERT_ID();"); // Adicionando a consulta para obter o último ID inserido
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    lastInsertedId = (ulong)await command.ExecuteScalarAsync(); // Executa a consulta e obtém o último ID inserido
+
+                    produto.ProdutoId = (int)lastInsertedId;
+                }
+                return produto;
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
