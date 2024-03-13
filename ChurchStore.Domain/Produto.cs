@@ -13,5 +13,6 @@ namespace ChurchStore.Domain
         public string? ImagemUrl { get; set; }
         public double ProdutoValor { get; set; }
         public int Quantidade { get; set; }
+        public bool Exibir { get; set; }
     }
 }

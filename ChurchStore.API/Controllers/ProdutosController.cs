@@ -16,13 +16,29 @@ namespace ChurchStore.API.Controllers
             _produtosApplication = produtosApplication;
         }
 
-        [Route("listar")]
+        [Route("retornar")]
         [HttpGet]
-        public async Task<IActionResult> Listar()
+        public async Task<IActionResult> Retornar(int id)
         {
             try
             {
-                var listaUsuarios = await _produtosApplication.Listar();
+                var listaUsuarios = await _produtosApplication.Retornar(id);
+                return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
+
+        [Route("listar")]
+        [HttpGet]
+        public async Task<IActionResult> Listar(bool publico)
+        {
+            try
+            {
+                var listaUsuarios = await _produtosApplication.Listar(publico);
                 return Ok(listaUsuarios);
             }
             catch (Exception ex)
@@ -39,6 +55,22 @@ namespace ChurchStore.API.Controllers
             try
             {
                 var listaUsuarios = await _produtosApplication.AdicionarProduto(produto);
+                return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
+
+        [Route("alterar")]
+        [HttpPost]
+        public async Task<IActionResult> AlterarProduto(Produto produto)
+        {
+            try
+            {
+                var listaUsuarios = await _produtosApplication.AlterarProduto(produto);
                 return Ok(listaUsuarios);
             }
             catch (Exception ex)

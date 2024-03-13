@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChurchStore.Database")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fa24d3db6af2d55fde3382b07df151ceb6eb028")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c700370b492adcb4d18988477bc634a7baadcbe7")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChurchStore.Database")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChurchStore.Database")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

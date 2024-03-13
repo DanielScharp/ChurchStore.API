@@ -16,11 +16,24 @@ namespace ChurchStore.App
             _produtosRepositorio = produtosRepositorio;
         }
 
-        public async Task<List<Produto>> Listar()
+        public async Task<Produto> Retornar(int id)
         {
             try
             {
-                return await _produtosRepositorio.Listar();
+                return await _produtosRepositorio.Retornar(id);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Produto>> Listar(bool publico)
+        {
+            try
+            {
+                return await _produtosRepositorio.Listar(publico);
 
             }
             catch
@@ -34,6 +47,19 @@ namespace ChurchStore.App
             try
             {
                 return await _produtosRepositorio.AdicionarProduto(produto);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<Produto> AlterarProduto(Produto produto)
+        {
+            try
+            {
+                return await _produtosRepositorio.AlterarProduto(produto);
 
             }
             catch
