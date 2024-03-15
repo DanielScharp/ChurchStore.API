@@ -53,5 +53,16 @@ namespace ChurchStore.App
                 throw;
             }
         }
+        public async Task<bool> RemoverItemDoPedido(int clienteId, int produtoId)
+        {
+            try
+            {
+                return await _pedidosRepositorio.RemoverItemDoPedido(clienteId, produtoId);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

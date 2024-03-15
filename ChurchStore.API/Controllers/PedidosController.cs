@@ -62,5 +62,21 @@ namespace ChurchStore.API.Controllers
 
             }
         }
+
+        [Route("itens/remover")]
+        [HttpPost]
+        public async Task<IActionResult> RemoverItemDoPedido(int clienteId, int produtoId)
+        {
+            try
+            {
+                var removido = await _pedidosApplication.RemoverItemDoPedido(clienteId, produtoId);
+                return Ok(removido);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
     }
 }
