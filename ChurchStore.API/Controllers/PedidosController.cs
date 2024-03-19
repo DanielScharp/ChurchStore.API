@@ -47,6 +47,22 @@ namespace ChurchStore.API.Controllers
             }
         }
 
+        [Route("itens/listar-pedidoId")]
+        [HttpGet]
+        public async Task<IActionResult> ListarItensPorPedido(int pedidoId)
+        {
+            try
+            {
+                var listaUsuarios = await _pedidosApplication.ListarItensPorPedido(pedidoId);
+                return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
+
         [Route("itens/adicionar")]
         [HttpPost]
         public async Task<IActionResult> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
@@ -65,11 +81,11 @@ namespace ChurchStore.API.Controllers
 
         [Route("itens/remover")]
         [HttpPost]
-        public async Task<IActionResult> RemoverItemDoPedido(int clienteId, int produtoId)
+        public async Task<IActionResult> RemoverItemDoPedido(int clienteId, int produtoId, int pedidoId)
         {
             try
             {
-                var removido = await _pedidosApplication.RemoverItemDoPedido(clienteId, produtoId);
+                var removido = await _pedidosApplication.RemoverItemDoPedido(clienteId, produtoId, pedidoId);
                 return Ok(removido);
             }
             catch (Exception ex)

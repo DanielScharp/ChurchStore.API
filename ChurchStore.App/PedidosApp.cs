@@ -40,6 +40,19 @@ namespace ChurchStore.App
                 throw;
             }
         }
+        
+
+        public async Task<List<PedidoItem>> ListarItensPorPedido(int pedidoId)
+        {
+            try
+            {
+                return await _pedidosRepositorio.ListarItensPorPedido(pedidoId);
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
         public async Task<int> AdicionarItemAoPedido(int clienteId, int produtoId, int quantidade)
         {
@@ -53,11 +66,11 @@ namespace ChurchStore.App
                 throw;
             }
         }
-        public async Task<bool> RemoverItemDoPedido(int clienteId, int produtoId)
+        public async Task<bool> RemoverItemDoPedido(int clienteId, int produtoId, int pedidoId)
         {
             try
             {
-                return await _pedidosRepositorio.RemoverItemDoPedido(clienteId, produtoId);
+                return await _pedidosRepositorio.RemoverItemDoPedido(clienteId, produtoId, pedidoId);
             }
             catch
             {

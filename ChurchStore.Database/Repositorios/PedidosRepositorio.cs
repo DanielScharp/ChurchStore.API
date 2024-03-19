@@ -153,6 +153,55 @@ namespace ChurchStore.Database.Repositorios
                 throw;
             }
         }
+        
+        public async Task<List<PedidoItem>> ListarItensPorPedido(int pedidoId)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connMySql))
+                {
+                    await conn.OpenAsync();
+
+                    var sql = new StringBuilder();
+                    sql.Append(" SELECT t1.ProdutoId, t1.ClienteId, t1.PedidoId, SUM(t1.Quantidade) as 'Quantidade', SUM(t1.Quantidade * t2.ProdutoValor) as 'Total', ");
+                    sql.Append(" t2.ProdutoNome, t2.ProdutoValor, t2.ImagemUrl, t3.ClienteNome ");
+                    sql.Append(" FROM pedidos_itens t1 ");
+                    sql.Append(" left join produtos t2 on t2.ProdutoId = t1.ProdutoId ");
+                    sql.Append(" LEFT JOIN clientes t3 ON t3.ClienteId = t1.ClienteId ");
+                    sql.AppendFormat(" where t1.PedidoId ='{0}' ", pedidoId);
+                    sql.Append(" GROUP BY t1.PedidoId, t1.ProdutoId");
+
+                    using MySqlCommand command = new(sql.ToString(), conn);
+
+                    using MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync();
+
+                    var pedidos = new List<PedidoItem>();
+
+                    while (reader.Read())
+                    {
+                        var pedido = new PedidoItem();
+
+                        pedido.ProdutoId = reader.GetInt32(reader.GetOrdinal("ProdutoId"));
+                        pedido.PedidoId = reader.GetInt32(reader.GetOrdinal("PedidoId"));
+                        pedido.ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId"));
+                        pedido.ClienteNome = reader[reader.GetOrdinal("ClienteNome")].ToString();
+                        pedido.Quantidade = reader.GetInt32(reader.GetOrdinal("Quantidade"));
+                        pedido.ProdutoNome = reader[reader.GetOrdinal("ProdutoNome")].ToString();
+                        pedido.ImagemUrl = reader[reader.GetOrdinal("ImagemUrl")].ToString();
+                        pedido.ProdutoValor = reader[reader.GetOrdinal("ProdutoValor")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("ProdutoValor")) : 0;
+                        pedido.Total = reader[reader.GetOrdinal("Total")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("Total")) : 0;
+
+                        pedidos.Add(pedido);
+                    }
+
+                    return pedidos;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
 
         private async Task<ulong> AdicionarPedido(int clienteId)
@@ -228,11 +277,15 @@ namespace ChurchStore.Database.Repositorios
             }
         }
 
-        public async Task<bool> RemoverItemDoPedido(int clienteId, int produtoId)
+        public async Task<bool> RemoverItemDoPedido(int clienteId, int produtoId, int pedidoId)
         {
             try
             {
-                ulong pedidoId = await RetornaIdPedidoAberto(clienteId);
+                int qtdAtualProduto = await RetornaQuantidadeProduto(produtoId);
+                int qtdProdutosRetorno = await RetornaQuantidadeProdutoPorCliente(clienteId, produtoId, pedidoId);
+                int quantidadeTotalProduto = qtdAtualProduto + qtdProdutosRetorno;
+                AlterarQuantidadeEstoque(produtoId, quantidadeTotalProduto);
+
                 using (var conn = new MySqlConnection(_connMySql))
                 {
                     await conn.OpenAsync();
@@ -317,7 +370,7 @@ namespace ChurchStore.Database.Repositorios
             }
         }
 
-        private async Task<int> RetornaQuantidadeProdutoPorCliente(int clienteId,int produtoId)
+        private async Task<int> RetornaQuantidadeProdutoPorCliente(int clienteId,int produtoId, int pedidoId)
         {
             try
             {
@@ -327,8 +380,8 @@ namespace ChurchStore.Database.Repositorios
 
                     var sql = new StringBuilder();
                     sql.Append(" select SUM(Quantidade) as Quantidade");
-                    sql.Append(" FROM church_store.pedidos_itens ");
-                    sql.AppendFormat(" (  where ClienteId = {0} and ProdutoId = {1} ", clienteId, produtoId);
+                    sql.Append(" FROM pedidos_itens ");
+                    sql.AppendFormat(" where ClienteId = {0} and ProdutoId = {1} AND PedidoId = {2} ", clienteId, produtoId, pedidoId);
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
