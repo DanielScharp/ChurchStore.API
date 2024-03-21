@@ -2,12 +2,12 @@
 using ChurchStore.App;
 using ChurchStore.Database.Repositorios;
 using ChurchStore.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChurchStore.API.Controllers
 {
-    [Route("api")]
     [ApiController]
     public class LoginController : ControllerBase
     {

@@ -1,11 +1,12 @@
 ﻿using ChurchStore.App;
 using ChurchStore.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChurchStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProdutosController : ControllerBase
     {
@@ -34,6 +35,7 @@ namespace ChurchStore.API.Controllers
 
         [Route("listar")]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Listar(bool publico)
         {
             try

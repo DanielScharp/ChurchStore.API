@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChurchStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
@@ -15,6 +15,22 @@ namespace ChurchStore.API.Controllers
         public UsuariosController(UsuarioApplication usuarioApplication)
         {
             _usuarioApplication = usuarioApplication;
+        }
+
+        [Route("retornar")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Retornar(string email, string senha)
+        {
+            try
+            {
+                var listaUsuarios = await _usuarioApplication.Retornar(email,senha);
+                return Ok(listaUsuarios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [Route("listar")]

@@ -20,8 +20,8 @@ namespace ChurchStore.App
         {
             try
             {
-                var lista = await _usuarioRepositorio.Retornar(email, senha);
-                return lista;
+                var usuario = await _usuarioRepositorio.Retornar(email, senha);
+                return usuario;
             }
             catch
             {

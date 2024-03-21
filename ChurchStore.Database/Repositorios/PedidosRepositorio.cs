@@ -163,13 +163,12 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT t1.ProdutoId, t1.ClienteId, t1.PedidoId, SUM(t1.Quantidade) as 'Quantidade', SUM(t1.Quantidade * t2.ProdutoValor) as 'Total', ");
+                    sql.Append(" SELECT t1.ProdutoId, t1.ClienteId, t1.PedidoId,t1.Quantidade, ");
                     sql.Append(" t2.ProdutoNome, t2.ProdutoValor, t2.ImagemUrl, t3.ClienteNome ");
                     sql.Append(" FROM pedidos_itens t1 ");
                     sql.Append(" left join produtos t2 on t2.ProdutoId = t1.ProdutoId ");
                     sql.Append(" LEFT JOIN clientes t3 ON t3.ClienteId = t1.ClienteId ");
                     sql.AppendFormat(" where t1.PedidoId ='{0}' ", pedidoId);
-                    sql.Append(" GROUP BY t1.PedidoId, t1.ProdutoId");
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
@@ -189,7 +188,7 @@ namespace ChurchStore.Database.Repositorios
                         pedido.ProdutoNome = reader[reader.GetOrdinal("ProdutoNome")].ToString();
                         pedido.ImagemUrl = reader[reader.GetOrdinal("ImagemUrl")].ToString();
                         pedido.ProdutoValor = reader[reader.GetOrdinal("ProdutoValor")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("ProdutoValor")) : 0;
-                        pedido.Total = reader[reader.GetOrdinal("Total")] != DBNull.Value ? reader.GetDouble(reader.GetOrdinal("Total")) : 0;
+                        pedido.Total = pedido.ProdutoValor * pedido.Quantidade;
 
                         pedidos.Add(pedido);
                     }
