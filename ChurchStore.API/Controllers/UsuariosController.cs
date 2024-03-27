@@ -20,7 +20,7 @@ namespace ChurchStore.API.Controllers
         [Route("retornar")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Retornar(string email, string senha)
+        public async Task<IActionResult> Retornar(string email, string senha = "")
         {
             try
             {
