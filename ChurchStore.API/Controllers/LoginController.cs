@@ -22,7 +22,7 @@ namespace ChurchStore.API.Controllers
         [Route("login")]
         public async Task<ActionResult<dynamic>> AuthenticateAsync([FromBody] Login model)
         {
-            var user = await _usuarioApplication.Retornar(model.Email, model.Senha);
+            var user = await _usuarioApplication.Retornar(model.Telefone, model.Senha);
 
             if (user.UsuarioId == 0)
             {

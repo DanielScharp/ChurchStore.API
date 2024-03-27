@@ -20,11 +20,11 @@ namespace ChurchStore.API.Controllers
         [Route("retornar")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Retornar(string email, string senha = "")
+        public async Task<IActionResult> Retornar(string telefone, string senha = "")
         {
             try
             {
-                var listaUsuarios = await _usuarioApplication.Retornar(email,senha);
+                var listaUsuarios = await _usuarioApplication.Retornar(telefone,senha);
                 return Ok(listaUsuarios);
             }
             catch (Exception ex)
@@ -55,6 +55,20 @@ namespace ChurchStore.API.Controllers
             try
             {
                  _usuarioApplication.Cadastrar(user);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Route("Alterar")]
+        [HttpPut]
+        public void Alterar(Usuario? user)
+        {
+            try
+            {
+                 _usuarioApplication.Alterar(user);
             }
             catch (Exception ex)
             {
