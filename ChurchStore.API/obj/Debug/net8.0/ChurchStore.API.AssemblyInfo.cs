@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChurchStore.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f182d5ed713422f39dcbe3baad90621f75a7c5cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c7faf72a5e523c4609e569b4d0568718c75c4a6")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChurchStore.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChurchStore.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
