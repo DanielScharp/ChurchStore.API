@@ -94,5 +94,20 @@ namespace ChurchStore.API.Controllers
 
             }
         }
+        [Route("Alterar-status")]
+        [HttpPut]
+        public IActionResult AlterarStatusPedido(int pedidoId, int statusId)
+        {
+            try
+            {
+                _pedidosApplication.AlterarStatusPedido(pedidoId, statusId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
     }
 }

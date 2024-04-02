@@ -77,5 +77,16 @@ namespace ChurchStore.App
                 throw;
             }
         }
+        public async void AlterarStatusPedido(int pedidoId, int statusId)
+        {
+            try
+            {
+                _pedidosRepositorio.AlterarStatusPedido(pedidoId, statusId);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
