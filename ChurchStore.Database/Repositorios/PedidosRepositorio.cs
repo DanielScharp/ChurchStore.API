@@ -70,10 +70,10 @@ namespace ChurchStore.Database.Repositorios
                     await conn.OpenAsync();
 
                     var sql = new StringBuilder();
-                    sql.Append(" SELECT t1.*, t2.Status, T3.* ");
+                    sql.Append(" SELECT t1.*, t2.Status, t3.* ");
                     sql.Append(" FROM pedidos t1");
                     sql.Append(" LEFT JOIN pedidos_status t2 ON t2.StatusId = t1.StatusId ");
-                    sql.Append(" LEFT JOIN clientes t3 ON t3.ClienteId = t1.ClienteId ");
+                    sql.Append(" LEFT JOIN usuarios t3 ON t3.UsuarioId = t1.ClienteId ");
 
                     using MySqlCommand command = new(sql.ToString(), conn);
 
@@ -86,8 +86,8 @@ namespace ChurchStore.Database.Repositorios
                         var pedido = new Pedido();
 
                         pedido.PedidoId = reader.GetInt32(reader.GetOrdinal("PedidoId"));
-                        pedido.ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId"));
-                        pedido.ClienteNome = reader[reader.GetOrdinal("ClienteNome")].ToString();
+                        pedido.ClienteId = reader.GetInt32(reader.GetOrdinal("UsuarioId"));
+                        pedido.ClienteNome = reader[reader.GetOrdinal("Nome")].ToString();
                         pedido.ClienteTel = reader[reader.GetOrdinal("Telefone")].ToString();
                         pedido.StatusId = reader.GetInt32(reader.GetOrdinal("StatusId"));
                         pedido.StatusNome = reader[reader.GetOrdinal("Status")].ToString();
