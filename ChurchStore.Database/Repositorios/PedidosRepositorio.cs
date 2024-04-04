@@ -164,10 +164,10 @@ namespace ChurchStore.Database.Repositorios
 
                     var sql = new StringBuilder();
                     sql.Append(" SELECT t1.ProdutoId, t1.ClienteId, t1.PedidoId,t1.Quantidade, ");
-                    sql.Append(" t2.ProdutoNome, t2.ProdutoValor, t2.ImagemUrl, t3.ClienteNome ");
+                    sql.Append(" t2.ProdutoNome, t2.ProdutoValor, t2.ImagemUrl, t3.Nome ");
                     sql.Append(" FROM pedidos_itens t1 ");
                     sql.Append(" left join produtos t2 on t2.ProdutoId = t1.ProdutoId ");
-                    sql.Append(" LEFT JOIN clientes t3 ON t3.ClienteId = t1.ClienteId ");
+                    sql.Append(" LEFT JOIN usuarios t3 ON t3.UsuarioId = t1.ClienteId ");
                     sql.AppendFormat(" where t1.PedidoId ='{0}' ", pedidoId);
 
                     using MySqlCommand command = new(sql.ToString(), conn);
@@ -183,7 +183,7 @@ namespace ChurchStore.Database.Repositorios
                         pedido.ProdutoId = reader.GetInt32(reader.GetOrdinal("ProdutoId"));
                         pedido.PedidoId = reader.GetInt32(reader.GetOrdinal("PedidoId"));
                         pedido.ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId"));
-                        pedido.ClienteNome = reader[reader.GetOrdinal("ClienteNome")].ToString();
+                        pedido.ClienteNome = reader[reader.GetOrdinal("Nome")].ToString();
                         pedido.Quantidade = reader.GetInt32(reader.GetOrdinal("Quantidade"));
                         pedido.ProdutoNome = reader[reader.GetOrdinal("ProdutoNome")].ToString();
                         pedido.ImagemUrl = reader[reader.GetOrdinal("ImagemUrl")].ToString();
